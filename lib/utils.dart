@@ -8,6 +8,19 @@ class CardExpirationFormatter extends TextInputFormatter {
     final newValueString = newValue.text;
     String valueToReturn = '';
 
+    // If the user typed 2–9, automatically prepend 0 → "01", "02", …, "09"
+    if (newValueString.length == 1 &&
+        (int.parse(newValueString[0]) >= 2 &&
+            int.parse(newValueString[0]) <= 9)) {
+      valueToReturn = "0${newValueString[0]}";
+      return newValue.copyWith(
+        text: valueToReturn,
+        selection: TextSelection.fromPosition(
+          TextPosition(offset: valueToReturn.length),
+        ),
+      );
+    }
+
     for (int i = 0; i < newValueString.length; i++) {
       if (newValueString[i] != '/') valueToReturn += newValueString[i];
       var nonZeroIndex = i + 1;
