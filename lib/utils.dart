@@ -21,6 +21,20 @@ class CardExpirationFormatter extends TextInputFormatter {
       );
     }
 
+    // If the user types 13–19, automatically replace it with "12".
+    if (newValueString.length == 2 &&
+        newValueString[0] == "1" &&
+        (int.parse(newValueString[1]) >= 3 &&
+            int.parse(newValueString[1]) <= 9)) {
+      valueToReturn = "${newValueString[0]}2";
+      return newValue.copyWith(
+        text: valueToReturn,
+        selection: TextSelection.fromPosition(
+          TextPosition(offset: valueToReturn.length),
+        ),
+      );
+    }
+
     for (int i = 0; i < newValueString.length; i++) {
       if (newValueString[i] != '/') valueToReturn += newValueString[i];
       var nonZeroIndex = i + 1;
